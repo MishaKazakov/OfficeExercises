@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:example="ru.miklelolyandex.officeexercises.SettingsActivity.MyDialogPreference">
+    <ru.miklelolyandex.officeexercises.Duartion_dialog_pref
+        android:title="@string/set_exercise_duration_str"
+        android:icon="@drawable/ic_timer_black_24dp"
+        android:dialogTitle="Задать продолжительность"
+        android:dialogMessage="Задайте длительность"
+        android:key="exercise_duration"
+        android:dialogLayout="@layout/exercise_duration_dialog"
+        android:positiveButtonText="@string/pref_dialog_ok_button"
+        android:negativeButtonText="@string/pref_dialog_cancel_button" />
+    <SwitchPreference
+        android:summaryOff="Экран может погаснуть"
+        android:summaryOn="Экран не погаснет во время упражений"
+        android:defaultValue="true"
+        android:icon="@drawable/ic_smartphone_black_24dp"
+        android:key="screen_on"
+        android:title="Не отключать экран" />
+
+    <ru.miklelolyandex.officeexercises.Interval_duration_dialog_pref
+        android:title="@string/set_exercise_interval_str"
+        android:key="interval_duration"
+        android:icon="@drawable/ic_timer_black_24dp"
+        android:dialogTitle="Задать продолжительность"
+        android:dialogMessage="Задайте длительность"
+        android:dialogLayout="@layout/interval_duration_dialog"
+        android:positiveButtonText="@string/pref_dialog_ok_button"
+        android:negativeButtonText="@string/pref_dialog_cancel_button"  />
+
+
+
+    <SwitchPreference
+        android:icon="@drawable/ic_add_alert_black_24dp"
+        android:defaultValue="false"
+        android:key="switch_notification"
+        android:title="@string/pref_notification_title" />
+
+    <ru.miklelolyandex.officeexercises.BeginTimeTimePicker
+        android:title="@string/pref_begin_timepicker"
+        android:dependency="switch_notification"
+        android:dialogLayout="@layout/pref_begin_timepicker"
+        android:key="beginNotification"
+        android:positiveButtonText="@string/pref_dialog_ok_button"
+        android:negativeButtonText="@string/pref_dialog_cancel_button"  />
+
+    <ru.miklelolyandex.officeexercises.EndTimeTimePicker
+        android:title="@string/pref_end_timepicker"
+        android:dependency="switch_notification"
+        android:dialogLayout="@layout/pref_begin_timepicker"
+        android:key="endNotification"
+        android:positiveButtonText="@string/pref_dialog_ok_button"
+        android:negativeButtonText="@string/pref_dialog_cancel_button"  />
+
+    <ru.miklelolyandex.officeexercises.NotificationIntervalTimer
+        android:key="interval_timer"
+        android:title="@string/notification_timer_str"
+        android:dialogLayout="@layout/exercise_duration_dialog"
+        android:dialogTitle="Период повтора"
+        android:dependency="switch_notification"
+        android:positiveButtonText="@string/pref_dialog_ok_button"
+        android:negativeButtonText="@string/pref_dialog_cancel_button"/>
+
+
+</PreferenceScreen>
