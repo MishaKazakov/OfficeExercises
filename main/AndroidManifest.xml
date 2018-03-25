@@ -31,6 +31,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ru.miklelolyandex.officeexercises.MainActivity" />
         </activity>
+        <receiver android:name=".AlarmReceiver"/>
     </application>
 
 </manifest>
