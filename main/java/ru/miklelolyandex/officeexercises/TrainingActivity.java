@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,9 +20,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class TrainingActivity extends AppCompatActivity {
-    private View prevButton;
-    private View nextButton;
-    private FloatingActionButton pauseButton;
+    private ImageButton prevButton;
+    private ImageButton nextButton;
+    private ImageButton pauseButton;
     private int exerciseNum = 0;
     private TextView exerciseDescription;
     private String[] textExercise;
@@ -60,11 +61,11 @@ public class TrainingActivity extends AppCompatActivity {
     }
 
     private void onCreateSetViews(){
-        prevButton = findViewById(R.id.previous_button);
-        nextButton = findViewById(R.id.next_button);
-        pauseButton = (FloatingActionButton) findViewById(R.id.pause_button);
+        prevButton    = findViewById(R.id.previous_button);
+        nextButton    = findViewById(R.id.next_button);
+        pauseButton   = findViewById(R.id.pause_button);
         trProgressBar = findViewById(R.id.progressBar);
-        exerciseDescription = (TextView)findViewById(R.id.exercise_description);
+        exerciseDescription = findViewById(R.id.exercise_description);
         myView = getWindow().getDecorView();
     }
 
