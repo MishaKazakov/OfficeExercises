@@ -2,10 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="ru.miklelolyandex.officeexercises.ChronoFragment">
 
-    <CalendarView
+    <com.applandeo.materialcalendarview.CalendarView
+        android:id="@+id/calendarView"
+        app:headerColor="@color/colorPrimaryDark"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></CalendarView>
+        android:layout_height="match_parent" />
 
 </FrameLayout>

@@ -9,10 +9,12 @@ import android.app.TaskStackBuilder;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -42,6 +44,17 @@ public class NotificationScheduler {
             setcalendar.add(Calendar.DATE,1);
 
         // Enable a receiver
+        enableReciver(context,cls,setcalendar);
+    }
+
+    public static void setRightNow(Context context, Class<?> cls) {
+        Calendar calendar = Calendar.getInstance();
+        long newTime = calendar.getTimeInMillis() + 10;
+        calendar.setTimeInMillis(newTime);
+        enableReciver(context,cls,calendar);
+    }
+
+    private static void enableReciver(Context context, Class<?> cls, Calendar setcalendar) {
 
         ComponentName receiver = new ComponentName(context, AlarmReceiver.class);
         PackageManager pm = context.getPackageManager();
@@ -50,12 +63,10 @@ public class NotificationScheduler {
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP);
 
-
         Intent intent1 = new Intent(context, cls);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, setcalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-
     }
 
     public static void cancelReminder(Context context,Class<?> cls)
@@ -113,5 +124,54 @@ public class NotificationScheduler {
         notificationManager.notify(DAILY_REMINDER_REQUEST_CODE, notification);
     }
 
+    public static void turnOffOnNotificaton(Context context, boolean notificationIsOn){
+        if (notificationIsOn) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String beginTime = preferences.getString("beginNotification", "9:00");
+            String endTime = preferences.getString("endNotification", "17:00");
+            String intervalPref = preferences.getString("interval_timer", "60");
+            int begPosition = beginTime.indexOf(":");
+            int beginHour = Integer.valueOf(beginTime.substring(0,begPosition));
+            int beginMinute = Integer.valueOf(beginTime.substring(begPosition+1));
 
+            int endPosition = endTime.indexOf(":");
+            int endHour = Integer.valueOf(endTime.substring(0,endPosition));
+            int endMinute = Integer.valueOf(endTime.substring(endPosition+1));
+            int interval = Integer.valueOf(intervalPref);
+
+            Calendar rightNow = Calendar.getInstance();
+            int currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
+            int currentMinute = rightNow.get(Calendar.MINUTE);
+            if (currentMinute + interval > 60){
+                currentMinute = currentMinute + interval - 60;
+                currentHour++;
+            } else{
+                currentMinute += interval;
+            }
+            int currentTime = currentHour * 60 + currentMinute;
+            final int midnight = 24*60;
+            if (currentTime >= midnight){
+                currentTime -= midnight;
+                currentHour = 0;
+            }
+
+            int timeEnd = endHour*60 + endMinute;
+            int timeBegin = beginHour*60 + beginMinute;
+
+            if (currentTime < timeEnd && currentTime > timeBegin){
+                setReminder(context, AlarmReceiver.class, currentHour, currentMinute);
+            } else if (currentTime < timeBegin || currentTime > timeEnd) {
+                if (beginMinute + interval > 60){
+                    beginMinute = beginMinute + interval - 60;
+                    beginHour++;
+                } else {
+                    beginMinute += interval;
+                }
+                setReminder(context, AlarmReceiver.class, beginHour, beginMinute);
+            }
+
+        } else {
+            cancelReminder(context, AlarmReceiver.class);
+        }
+    }
 }

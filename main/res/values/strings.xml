@@ -93,11 +93,11 @@
     <string name="title_activity_settings">Settings</string>
     <string name="set_exercise_duration_str">Длительность упражения</string>
     <string name="set_exercise_interval_str">Время перерыва</string>
-    <string name="pref_dialog_duration_name">Задать продолжительность</string>
+    <string name="pref_dialog_duration_name">Задать продолжительность в секундах</string>
     <string name="pref_dialog_cancel_button">Отменить</string>
     <string name="pref_dialog_ok_button">Задать</string>
 
-    <string name="pref_duration_toast_too_small">Слишком мальенькое значение</string>
+    <string name="pref_duration_toast_too_small">Меньше нельзя</string>
     <string name="pref_duration_toast_too_big">Слишком большое значение</string>
 
     <string name="pref_notification_title">Уведомления</string>
@@ -107,4 +107,13 @@
     <string name="minutes">минут</string>
 
     <string name="notification_timer_str">Промежуток повторения</string>
+
+    <string name="notification_title">Пора размяться!</string>
+
+    <string name="finish_button_text">Закончить</string>
+    <string name="finish_text">Вот и закончили. \nДо скорой встречи!</string>
+    <string name="time_spent_text">Затраченно:</string>
+
+    <string name="main_start_button">Начать</string>
+    <string name="sensor">Сенсор</string>
 </resources>
