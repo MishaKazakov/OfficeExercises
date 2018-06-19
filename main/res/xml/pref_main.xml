@@ -18,19 +18,20 @@
         android:key="screen_on"
         android:title="Не отключать экран" />
 
-    <ru.miklelolyandex.officeexercises.Interval_duration_dialog_pref
-        android:title="@string/set_exercise_interval_str"
-        android:key="interval_duration"
-        android:icon="@drawable/ic_timer_black_24dp"
-        android:dialogTitle="Задать продолжительность"
-        android:dialogMessage="Задайте длительность"
-        android:dialogLayout="@layout/interval_duration_dialog"
-        android:positiveButtonText="@string/pref_dialog_ok_button"
-        android:negativeButtonText="@string/pref_dialog_cancel_button"  />
+    <!--<ru.miklelolyandex.officeexercises.Interval_duration_dialog_pref-->
+        <!--android:title="@string/set_exercise_interval_str"-->
+        <!--android:key="interval_duration"-->
+        <!--android:icon="@drawable/ic_timer_black_24dp"-->
+        <!--android:dialogTitle="Задать продолжительность"-->
+        <!--android:dialogMessage="Задайте длительность"-->
+        <!--android:dialogLayout="@layout/pref_main"-->
+        <!--android:positiveButtonText="@string/pref_dialog_ok_button"-->
+        <!--android:negativeButtonText="@string/pref_dialog_cancel_button"  />-->
 
 
 
     <SwitchPreference
+        android:id="@+id/notification_switch"
         android:icon="@drawable/ic_add_alert_black_24dp"
         android:defaultValue="false"
         android:key="switch_notification"
@@ -60,6 +61,18 @@
         android:dependency="switch_notification"
         android:positiveButtonText="@string/pref_dialog_ok_button"
         android:negativeButtonText="@string/pref_dialog_cancel_button"/>
+
+    <SwitchPreference
+        android:id="@+id/sensor_switch"
+        android:key="sensor_switch"
+        android:title="@string/sensor"
+        android:icon="@drawable/ic_screen_rotation_black_24dp"
+        android:defaultValue="false"
+        android:dependency="switch_notification"
+        android:summary=""
+        android:summaryOn=""
+        android:summaryOff=""
+        />
 
 
 </PreferenceScreen>

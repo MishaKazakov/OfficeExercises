@@ -86,7 +86,6 @@ public class NotificationIntervalTimer extends DialogPreference {
     };
 
     private void smallDefentition(){
-
         Toast toast = Toast.makeText(mContext.getApplicationContext(),
                 R.string.pref_duration_toast_too_small, Toast.LENGTH_SHORT);
         toast.show();

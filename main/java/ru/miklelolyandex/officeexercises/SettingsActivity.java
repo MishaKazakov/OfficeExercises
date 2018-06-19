@@ -1,5 +1,7 @@
 package ru.miklelolyandex.officeexercises;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -8,10 +10,16 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.ListPreference;
 import android.preference.SwitchPreference;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.Calendar;
+
+import static ru.miklelolyandex.officeexercises.NotificationScheduler.turnOffOnNotificaton;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -45,8 +53,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("beginNotification"));
             bindPreferenceSummaryToValue(findPreference("endNotification"));
             bindPreferenceSummaryToValue(findPreference("exercise_duration"));
-            bindPreferenceSummaryToValue(findPreference("interval_duration"));
+//            bindPreferenceSummaryToValue(findPreference("interval_duration"));
             bindPreferenceSummaryToValue(findPreference("interval_timer"));
+            bindPreferenceSummaryToValue(findPreference("sensor_switch"));
 
             switchListener(findPreference("switch_notification"));
             switchListener(findPreference("beginNotification"));
@@ -63,7 +72,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     SwitchPreference pref = (SwitchPreference) preference;
-                    turnOffOnNotificaton(preference, pref.isChecked());
+                    turnOffOnNotificaton(preference.getContext(), pref.isChecked());
+                    stopNotification(preference);
                     return false;
                 }
             });
@@ -71,10 +81,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    turnOffOnNotificaton(preference, true);
+                    turnOffOnNotificaton(preference.getContext(), true);
+                    stopNotification(preference);
                     return false;
                 }
             });
+        }
+    }
+
+    private static void stopNotification(Preference preference){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
+        Boolean sensorPref = preferences.getBoolean("sensor_switch", false);
+        if (!sensorPref) {
+            preference.getContext().stopService( new Intent(preference.getContext(), notificationService.class));
         }
     }
 
@@ -120,11 +139,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 // For list preferences, look up the correct display value in
                 // the preference's 'entries' list.
                 SwitchPreference switchPreference = (SwitchPreference) preference;
-                boolean logicValue = switchPreference.isEnabled();
-
-                // Set the summary to reflect the new value.
-                preference.setSummary(!logicValue ? "Disabled" : "Enabled");
-
             } else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
@@ -138,53 +152,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     }
 
-    private static void turnOffOnNotificaton(Preference preference, boolean notificationIsOn){
 
-        if (notificationIsOn) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
-            String beginTime = preferences.getString("beginNotification", "9:00");
-            String endTime = preferences.getString("endNotification", "17:00");
-            String intervalPref = preferences.getString("interval_timer", "60");
-            int beginHour = Integer.valueOf(beginTime.substring(0,2));
-            int beginMinute = Integer.valueOf(beginTime.substring(3));
-            int endHour = Integer.valueOf(endTime.substring(0,2));
-            int endMinute = Integer.valueOf(endTime.substring(3));
-            int interval = Integer.valueOf(intervalPref);
-
-            Calendar rightNow = Calendar.getInstance();
-            int currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
-            int currentMinute = rightNow.get(Calendar.MINUTE);
-            if (currentMinute + interval > 60){
-                currentMinute = currentMinute + interval - 60;
-                currentHour++;
-            } else{
-                currentMinute += interval;
-            }
-            int currentTime = currentHour * 60 + currentMinute;
-            final int midnight = 24*60;
-            if (currentTime >= midnight){
-                currentTime -= midnight;
-                currentHour = 0;
-            }
-
-            int timeEnd = endHour*60 + endMinute;
-            int timeBegin = beginHour*60 + beginMinute;
-
-            if (currentTime < timeEnd && currentTime > timeBegin){
-                NotificationScheduler.setReminder(preference.getContext(), AlarmReceiver.class, currentHour, currentMinute);
-            } else if (currentTime < timeBegin || currentTime > timeEnd) {
-                if (beginMinute + interval > 60){
-                    beginMinute = beginMinute + interval - 60;
-                    beginHour++;
-                } else {
-                    beginMinute += interval;
-                }
-                NotificationScheduler.setReminder(preference.getContext(), AlarmReceiver.class, beginHour, beginMinute);
-            }
-
-        } else {
-            NotificationScheduler.cancelReminder(preference.getContext(), AlarmReceiver.class);
+    @Override
+    public boolean onOptionsItemSelected ( MenuItem item ) {
+        switch ( item.getItemId() ) {
+            case android.R.id.home:
+                finish();
         }
+        return super.onOptionsItemSelected( item );
     }
+
 
 }
