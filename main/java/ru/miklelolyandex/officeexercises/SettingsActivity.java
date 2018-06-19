@@ -1,6 +1,5 @@
 package ru.miklelolyandex.officeexercises;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,14 +9,7 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.ListPreference;
 import android.preference.SwitchPreference;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import java.util.Calendar;
 
 import static ru.miklelolyandex.officeexercises.NotificationScheduler.turnOffOnNotificaton;
 
@@ -93,7 +85,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
         Boolean sensorPref = preferences.getBoolean("sensor_switch", false);
         if (!sensorPref) {
-            preference.getContext().stopService( new Intent(preference.getContext(), notificationService.class));
+            preference.getContext().stopService( new Intent(preference.getContext(), NotificationService.class));
         }
     }
 

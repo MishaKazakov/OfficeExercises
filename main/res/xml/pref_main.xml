@@ -18,18 +18,6 @@
         android:key="screen_on"
         android:title="Не отключать экран" />
 
-    <!--<ru.miklelolyandex.officeexercises.Interval_duration_dialog_pref-->
-        <!--android:title="@string/set_exercise_interval_str"-->
-        <!--android:key="interval_duration"-->
-        <!--android:icon="@drawable/ic_timer_black_24dp"-->
-        <!--android:dialogTitle="Задать продолжительность"-->
-        <!--android:dialogMessage="Задайте длительность"-->
-        <!--android:dialogLayout="@layout/pref_main"-->
-        <!--android:positiveButtonText="@string/pref_dialog_ok_button"-->
-        <!--android:negativeButtonText="@string/pref_dialog_cancel_button"  />-->
-
-
-
     <SwitchPreference
         android:id="@+id/notification_switch"
         android:icon="@drawable/ic_add_alert_black_24dp"
@@ -73,6 +61,5 @@
         android:summaryOn=""
         android:summaryOff=""
         />
-
 
 </PreferenceScreen>

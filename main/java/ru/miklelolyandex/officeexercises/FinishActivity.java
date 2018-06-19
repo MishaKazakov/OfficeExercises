@@ -33,7 +33,7 @@ public class FinishActivity extends AppCompatActivity {
         Boolean sensorPref = preferences.getBoolean("sensor_switch", false);
         if (timer) {
             if (sensorPref) {
-                startService(new Intent(this, notificationService.class));
+                startService(new Intent(this, NotificationService.class));
                 return;
             }
             turnOffOnNotificaton(getApplicationContext(), timer);

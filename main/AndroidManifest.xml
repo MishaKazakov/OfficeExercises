@@ -21,20 +21,20 @@
         </activity>
         <activity
             android:name=".TrainingActivity"
-            android:label="Training"
+            android:label=""
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".FinishActivity"
             android:label="" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
+            android:label="Настройки"
             android:parentActivityName=".MainActivity" />
 
         <receiver android:name=".AlarmReceiver" />
 
         <service
-            android:name=".notificationService"
+            android:name=".NotificationService"
             android:enabled="true"
             android:exported="true"></service>
     </application>

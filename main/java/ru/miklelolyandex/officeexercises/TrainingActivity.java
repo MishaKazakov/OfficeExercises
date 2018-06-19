@@ -67,7 +67,7 @@ public class TrainingActivity extends AppCompatActivity {
 
     private void stopNotification(){
         turnOffOnNotificaton(getApplicationContext(), false);
-        stopService( new Intent(this, notificationService.class));
+        stopService( new Intent(this, NotificationService.class));
     }
 
     private void getExtras(){

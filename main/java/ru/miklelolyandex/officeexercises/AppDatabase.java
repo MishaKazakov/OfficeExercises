@@ -11,7 +11,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Exercise.class}, version = 1, exportSchema = false)
-public abstract class AppDatabase extends RoomDatabase{
+    public abstract class AppDatabase extends RoomDatabase{
     public abstract ExerciseDao exerciseDao();
 
     private static AppDatabase INSTANCE;

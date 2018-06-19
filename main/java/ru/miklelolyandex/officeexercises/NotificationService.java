@@ -10,22 +10,20 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.util.FloatMath;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class notificationService extends Service implements SensorEventListener {
+public class NotificationService extends Service implements SensorEventListener {
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
 
     private float[] mGravity;
-    private float mAccel;
-    private float mAccelCurrent;
-    private float mAccelLast;
+    private float mAccelerometer;
+    private float mAccelerometerCurrent;
+    private float mAccelerometerLast;
     private Timer timer;
     private int scheduleTime;
     private Context context;
@@ -36,9 +34,9 @@ public class notificationService extends Service implements SensorEventListener 
         context = this;
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mAccel = 0.00f;
-        mAccelCurrent = SensorManager.GRAVITY_EARTH;
-        mAccelLast = SensorManager.GRAVITY_EARTH;
+        mAccelerometer = 0.00f;
+        mAccelerometerCurrent = SensorManager.GRAVITY_EARTH;
+        mAccelerometerLast = SensorManager.GRAVITY_EARTH;
         sensorManager.registerListener(this,accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         startTimer();
     }
@@ -81,18 +79,16 @@ public class notificationService extends Service implements SensorEventListener 
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
             mGravity = event.values.clone();
-            // Shake detection
+
             float x = mGravity[0];
             float y = mGravity[1];
             float z = mGravity[2];
-            mAccelLast = mAccelCurrent;
-            mAccelCurrent = (float)Math.sqrt(x*x + y*y + z*z);
-            float delta = mAccelCurrent - mAccelLast;
-            mAccel = mAccel * 0.9f + delta;
-            // Make this higher or lower according to how much
-            // motion you want to detect
-            if(mAccel > 3){
-                Log.d("sensor", "sensor is working");
+            mAccelerometerLast = mAccelerometerCurrent;
+            mAccelerometerCurrent = (float)Math.sqrt(x*x + y*y + z*z);
+            float delta = mAccelerometerCurrent - mAccelerometerLast;
+            mAccelerometer = mAccelerometer * 0.9f + delta;
+
+            if(mAccelerometer > 3){
                 stopTimer();
                 startTimer();
             }
